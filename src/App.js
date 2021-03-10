@@ -1,23 +1,29 @@
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import PersonalInfo from './PersonalInfo/PersonalInfo';
+import Password from './Password/Password';
+import Finish from './Finish/Finish';
 
-function App() {
+function App(props) {
+  const [currentPage, setPage] = useState(props.page);
+  const [userData, setUserData] = useState({});
+
+  function handleSubmit(nextPage, data) {
+    setPage(nextPage);
+    setUserData(Object.assign(userData, data));
+  }
+
+  function getContent() {
+    let content;
+    if (currentPage === 1) content = <PersonalInfo onSubmit={handleSubmit} />;
+    if (currentPage === 2) content = <Password onSubmit={handleSubmit} />;
+    if (currentPage === 3) content = <Finish userData={userData}/>
+    return content;
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {getContent()}
     </div>
   );
 }
